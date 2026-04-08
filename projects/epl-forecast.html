@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<script>
+// Theme — runs immediately to avoid flash
+(function(){
+  const t = localStorage.getItem('ak-theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', t);
+})();
+
+function toggleTheme(){
+  const h = document.documentElement;
+  const b = document.getElementById('themeBtn');
+  const isDark = h.getAttribute('data-theme') === 'dark';
+  const next = isDark ? 'light' : 'dark';
+  h.setAttribute('data-theme', next);
+  b.textContent = isDark ? '☽ Dark' : '☀ Light';
+  localStorage.setItem('ak-theme', next);
+}
+
+// Set correct button label on load
+document.addEventListener('DOMContentLoaded', function(){
+  const b = document.getElementById('themeBtn');
+  if(b){
+    const t = localStorage.getItem('ak-theme') || 'dark';
+    b.textContent = t === 'dark' ? '☀ Light' : '☽ Dark';
+  }
+});
+</script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EPL Match Forecasting — Aaryan Kamdar</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--bg2:#111;--bg3:#181818;--ink:#f0ece4;--ink2:#a09a92;--ink3:#5a5450;--accent:#e84035;--accent2:#ff6b5e;--green:#2eab8a;--border:#252525;--border2:#333;--nav-bg:rgba(10,10,10,0.94);--tag:#1e1e1e;--mono:'Space Mono',monospace;--sans:'Space Grotesk',sans-serif;}
+[data-theme="light"]{--bg:#f5f2ec;--bg2:#ede9df;--bg3:#e4dfd5;--ink:#0d0d0d;--ink2:#5a5550;--ink3:#9a9590;--accent:#c0392b;--accent2:#e84035;--green:#1a6b5a;--border:#d8d3c8;--border2:#c8c3b8;--nav-bg:rgba(245,242,236,0.94);--tag:#e0dbd2;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.65;overflow-x:hidden;transition:background 0.3s,color 0.3s;}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;background:var(--nav-bg);border-bottom:1px solid var(--border);backdrop-filter:blur(20px);}
+.nav-logo{font-family:var(--mono);font-size:12px;color:var(--ink2);text-decoration:none;}.nav-logo b{color:var(--accent);}
+.nav-r{display:flex;align-items:center;gap:2rem;}
+.nav-links{display:flex;gap:1.5rem;list-style:none;}
+.nav-links a{font-size:11px;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;color:var(--ink2);transition:color 0.2s;}.nav-links a:hover{color:var(--accent);}
+.tbtn{font-family:var(--mono);font-size:10px;padding:5px 12px;border:1px solid var(--border2);border-radius:2px;background:transparent;color:var(--ink2);cursor:pointer;transition:all 0.2s;}.tbtn:hover{border-color:var(--accent);color:var(--accent);}
+.wrap{max-width:1000px;margin:0 auto;padding:0 2rem;}
+.wrap-wide{max-width:1200px;margin:0 auto;padding:0 2.5rem;}
+/* HERO */
+.ph{padding:110px 0 60px;border-bottom:1px solid var(--border);}
+.back{display:inline-flex;align-items:center;gap:0.4rem;font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);text-decoration:none;margin-bottom:2rem;transition:color 0.2s;}.back:hover{color:var(--accent);}
+.pcat{font-family:var(--mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:0.8rem;}
+.ph h1{font-size:clamp(2.2rem,5vw,3.8rem);font-weight:700;line-height:1.0;letter-spacing:-0.03em;margin-bottom:1rem;}.ph h1 em{color:var(--accent);font-style:italic;}
+.psub{font-size:0.95rem;color:var(--ink2);max-width:640px;margin-bottom:2rem;line-height:1.8;}.psub strong{color:var(--ink);}
+.ptags{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:2rem;}
+.ptag{font-family:var(--mono);font-size:10px;padding:3px 9px;background:var(--tag);border:1px solid var(--border2);border-radius:2px;color:var(--ink2);}.ptag.r{background:rgba(232,64,53,0.1);border-color:rgba(232,64,53,0.3);color:var(--accent);}
+.plinks{display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:2rem;}
+.btn{display:inline-flex;align-items:center;gap:0.4rem;padding:9px 20px;font-size:12px;font-weight:600;letter-spacing:0.05em;text-decoration:none;border-radius:2px;transition:all 0.2s;cursor:pointer;border:none;font-family:var(--sans);}
+.btn-r{background:var(--accent);color:#fff;}.btn-r:hover{background:var(--accent2);}
+.btn-o{background:transparent;color:var(--ink);border:1.5px solid var(--border2);}.btn-o:hover{border-color:var(--accent);color:var(--accent);}
+/* BODY */
+.pbody{padding:60px 0;}.psec{margin-bottom:3.5rem;}
+.psec h2{font-size:1.35rem;font-weight:700;margin-bottom:1rem;position:relative;padding-bottom:0.6rem;}
+.psec h2::after{content:'';position:absolute;bottom:0;left:0;width:28px;height:2px;background:var(--accent);}
+.psec p{font-size:0.9rem;color:var(--ink2);line-height:1.8;margin-bottom:1rem;}.psec p strong{color:var(--ink);}
+.psec ul{list-style:none;display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1rem;}
+.psec li{font-size:0.88rem;color:var(--ink2);padding-left:1.2rem;position:relative;line-height:1.7;}
+.psec li::before{content:'—';position:absolute;left:0;color:var(--border2);}.psec li strong{color:var(--ink);}
+/* METRICS */
+.ms3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin:2rem 0;}
+.ms4{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin:2rem 0;}
+.mc{background:var(--bg2);padding:1.3rem;text-align:center;}
+.mn{font-size:2rem;font-weight:700;color:var(--green);line-height:1;margin-bottom:0.2rem;}.mn.r{color:var(--accent);}
+.ml{font-family:var(--mono);font-size:9px;color:var(--ink3);letter-spacing:0.08em;text-transform:uppercase;}
+/* TABLE */
+.tbl-wrap{overflow-x:auto;margin:1.5rem 0;}
+.tbl{width:100%;border-collapse:collapse;font-size:0.82rem;}
+.tbl th{font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-align:left;padding:0.55rem 0.9rem;background:var(--accent);color:#fff;font-weight:700;}
+.tbl td{padding:0.5rem 0.9rem;border-bottom:1px solid var(--border);}
+.tbl tr:last-child td{border-bottom:none;}.tbl tr:hover td{background:var(--bg3);}
+.tbl tr.best td{background:rgba(46,171,138,0.06);}
+.win{color:var(--green);font-weight:700;}.lose{color:var(--accent);}
+.bdg{display:inline-block;padding:1px 7px;border-radius:10px;font-family:var(--mono);font-size:9px;font-weight:700;}
+.bdg.w{background:rgba(46,171,138,0.15);color:var(--green);border:1px solid rgba(46,171,138,0.3);}
+.bdg.l{background:rgba(232,64,53,0.1);color:var(--accent);border:1px solid rgba(232,64,53,0.25);}
+/* INSIGHT */
+.ib{padding:1rem 1.4rem;background:rgba(46,171,138,0.06);border:1px solid rgba(46,171,138,0.2);border-left:3px solid var(--green);font-size:0.87rem;color:var(--ink2);line-height:1.7;margin:1.5rem 0;}.ib strong{color:var(--ink);}
+.warn{padding:1rem 1.4rem;background:rgba(232,64,53,0.05);border:1px solid rgba(232,64,53,0.2);border-left:3px solid var(--accent);font-size:0.87rem;color:var(--ink2);line-height:1.7;margin:1.5rem 0;}.warn strong{color:var(--accent);}
+/* OUTCOME GRID */
+.outcome-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin:1.5rem 0;}
+.outcome-cell{background:var(--bg2);padding:1.4rem;}
+.oc-label{font-family:var(--mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:0.6rem;}
+.oc-title{font-size:1rem;font-weight:700;margin-bottom:0.4rem;}
+.oc-freq{font-family:var(--mono);font-size:1.4rem;font-weight:700;color:var(--green);margin-bottom:0.4rem;}
+.oc-desc{font-size:0.8rem;color:var(--ink2);line-height:1.6;}
+/* STRATEGY TABS */
+.tabs{display:flex;gap:1px;background:var(--border);margin-bottom:2rem;}
+.tab{padding:0.7rem 1.4rem;font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;background:var(--bg2);border:none;cursor:pointer;color:var(--ink3);transition:all 0.18s;}
+.tab.on{background:var(--accent);color:#fff;}
+.tab:hover:not(.on){background:var(--bg3);color:var(--ink);}
+.tab-pane{display:none;}.tab-pane.on{display:block;}
+/* SUMMARY WIN TABLE */
+.sum-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin:1.5rem 0;}
+.sum-cell{background:var(--bg2);padding:1.2rem;text-align:center;}
+.sum-lbl{font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:0.5rem;}
+.sum-val{font-size:1rem;font-weight:700;}
+.sum-val.g{color:var(--green);}.sum-val.r{color:var(--accent);}
+/* PIPELINE */
+.pipe{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:var(--border);margin:1.5rem 0;}
+.pipe-step{background:var(--bg2);padding:1.2rem 1.3rem;}
+.ps-num{font-family:var(--mono);font-size:10px;color:var(--accent);margin-bottom:0.4rem;}
+.ps-title{font-size:0.88rem;font-weight:700;margin-bottom:0.3rem;}
+.ps-desc{font-size:0.78rem;color:var(--ink2);line-height:1.55;}
+/* PNAV + FOOTER */
+.pnav{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
+.pnav-item{background:var(--bg2);padding:1.5rem 2rem;text-decoration:none;display:block;transition:background 0.2s;}.pnav-item:hover{background:var(--bg3);}
+.pnav-dir{font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:0.3rem;}
+.pnav-title{font-size:0.9rem;font-weight:600;color:var(--ink);}
+.pnav-item.next{text-align:right;}
+footer{border-top:1px solid var(--border);padding:1.5rem 2.5rem;display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:10px;color:var(--ink3);}
+footer a{color:var(--ink3);text-decoration:none;}
+@keyframes up{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.a1{animation:up 0.6s ease forwards 0.05s;}.a2{animation:up 0.6s ease forwards 0.15s;}.a3{animation:up 0.6s ease forwards 0.25s;}.a4{animation:up 0.6s ease forwards 0.35s;}
+.rv{opacity:1;transform:translateY(0);}
+@media(max-width:768px){nav{padding:0 1.2rem;}.nav-links{gap:1rem;}.pnav{grid-template-columns:1fr;}.ms3,.ms4,.outcome-grid,.sum-grid{grid-template-columns:repeat(2,1fr);}.tabs{flex-wrap:wrap;}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html"><b>AK</b> // PORTFOLIO</a>
+  <div class="nav-r">
+    <ul class="nav-links">
+      
+      <li><a href="../index.html#projects">Projects</a></li>
+      <li><a href="../index.html#contact">Contact</a></li>
+    </ul>
+    <button class="tbtn" id="themeBtn" onclick="toggleTheme()">☀ Light</button>
+  </div>
+</nav>
+
+<div class="wrap">
+<div class="ph">
+  <a href="../index.html#projects" class="back a1">← Back to Projects</a>
+  <p class="pcat a1">Probabilistic ML · Sports Forecasting · ECE 6514</p>
+  <h1 class="a2">Probabilistic EPL<br><em>Match Forecasting</em></h1>
+  <p class="psub a3">Calibrated ensemble models for <strong>3-class outcome forecasting</strong> across 3,800 Premier League matches (2014–2023). Evaluated with Ignorance Score across 3 validation strategies. Model beats climatology in <strong>2/3 overall strategies</strong> and wins on Home Win and Draw outcomes consistently.</p>
+  <div class="ptags a3">
+    <span class="ptag r">Probabilistic ML</span><span class="ptag r">Proper Scoring Rules</span>
+    <span class="ptag">Calibrated Ensemble</span><span class="ptag">XGBoost</span>
+    <span class="ptag">Logistic Regression</span><span class="ptag">Random Forest</span>
+    <span class="ptag">Ignorance Score</span><span class="ptag">scikit-learn</span>
+  </div>
+  <div class="plinks a4">
+    <a href="https://www.football-data.co.uk/englandm.php" target="_blank" class="btn btn-o">Data Source ↗</a>
+    <a href="#results" class="btn btn-o">Results ↓</a>
+  </div>
+</div>
+</div>
+
+<div class="wrap">
+<div class="pbody">
+
+  <!-- OVERVIEW -->
+  <div class="psec rv">
+    <h2>Overview</h2>
+    <p>This project presents a unified analysis of probabilistic forecasting for English Premier League match outcomes. Match outcomes are modeled as three mutually exclusive classes — <strong>Home Win (H)</strong>, <strong>Draw (D)</strong>, and <strong>Away Win (A)</strong> — and evaluated against outcome-specific climatology baselines using proper scoring rules, primarily the Ignorance Score.</p>
+    <p>Multiple validation strategies are employed to assess robustness under distribution shift. The results show that calibrated and ensemble-based ML models provide consistent improvements over climatology for Away and Draw outcomes, while Home Wins remain the most challenging to forecast reliably.</p>
+    <div class="ms4">
+      <div class="mc"><div class="mn">3,800</div><div class="ml">Total Matches</div></div>
+      <div class="mc"><div class="mn">2014–23</div><div class="ml">Seasons Covered</div></div>
+      <div class="mc"><div class="mn">3</div><div class="ml">Validation Strategies</div></div>
+      <div class="mc"><div class="mn">2/3</div><div class="ml">Overall Model Wins</div></div>
+    </div>
+  </div>
+
+  <!-- OUTCOME DISTRIBUTION -->
+  <div class="psec rv">
+    <h2>Outcome Distribution</h2>
+    <p>The three outcomes are imbalanced — Home Win is the dominant class, making Away Win and Draw inherently harder to forecast. This motivates outcome-specific evaluation rather than aggregated accuracy.</p>
+    <div class="outcome-grid">
+      <div class="outcome-cell">
+        <div class="oc-label">Home Win (H)</div>
+        <div class="oc-freq">~50%</div>
+        <div class="oc-title">Home Team Wins</div>
+        <div class="oc-desc">Dominant class. Home advantage makes this the most frequent but also most important outcome to model correctly.</div>
+      </div>
+      <div class="outcome-cell">
+        <div class="oc-label">Draw (D)</div>
+        <div class="oc-freq">~24%</div>
+        <div class="oc-title">Equal Goals</div>
+        <div class="oc-desc">Rarest outcome. Both teams score equal goals. Climatology strong baseline due to low variance in frequency.</div>
+      </div>
+      <div class="outcome-cell">
+        <div class="oc-label">Away Win (A)</div>
+        <div class="oc-freq">~26%</div>
+        <div class="oc-title">Away Team Wins</div>
+        <div class="oc-desc">Most variable across seasons. Model beats climatology under temporal validation but struggles in cross-season splits.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EVALUATION -->
+  <div class="psec rv">
+    <h2>Evaluation Framework</h2>
+    <p><strong>Ignorance Score (IGN)</strong> is the primary metric — it measures the information content of a forecast in bits: IGN = −log₂(p_true). Lower IGN = better. It strongly penalizes confident but wrong predictions and rewards well-calibrated probability estimates. Climatology — the empirical base rate of each outcome in training data — is used as the baseline. Any model that cannot beat climatology cannot be considered probabilistically informative.</p>
+    <p><strong>Accuracy</strong> is included only as a descriptive metric. It ignores probability magnitudes, treats confident and uncertain predictions equally, and fails to penalize overconfident errors — so identical accuracy can hide very different probabilistic quality.</p>
+    <div class="pipe">
+      <div class="pipe-step"><div class="ps-num">01</div><div class="ps-title">Feature Engineering</div><div class="ps-desc">Home/away goals, shots, full-time result, team identity from Football-Data.co.uk</div></div>
+      <div class="pipe-step"><div class="ps-num">02</div><div class="ps-title">7 Base Models</div><div class="ps-desc">Logistic Regression, Calibrated RF, Calibrated Ridge, XGBoost, Naive Bayes, Gradient Boost, Isotonic LogReg</div></div>
+      <div class="pipe-step"><div class="ps-num">03</div><div class="ps-title">2 Ensembles</div><div class="ps-desc">Best Ensemble + Calibrated Ensemble combining predictions via probability averaging</div></div>
+      <div class="pipe-step"><div class="ps-num">04</div><div class="ps-title">Probability Calibration</div><div class="ps-desc">CalibratedClassifierCV with isotonic and sigmoid methods for reliable confidence estimates</div></div>
+      <div class="pipe-step"><div class="ps-num">05</div><div class="ps-title">3 Validation Strategies</div><div class="ps-desc">Temporal (2014–22 → 2023), Even→Odd, Odd→Even — each revealing different robustness aspects</div></div>
+      <div class="pipe-step"><div class="ps-num">06</div><div class="ps-title">IGN Evaluation</div><div class="ps-desc">Outcome-specific Ignorance Score comparison vs climatology baseline per strategy</div></div>
+    </div>
+  </div>
+
+  <!-- VALIDATION STRATEGIES -->
+  <div class="psec rv">
+    <h2>Validation Strategies</h2>
+    <div class="outcome-grid">
+      <div class="outcome-cell">
+        <div class="oc-label">Strategy 1</div>
+        <div class="oc-title">Temporal</div>
+        <div class="oc-freq" style="font-size:1rem;margin-bottom:0.6rem;">Train 2014–22 → Test 2023</div>
+        <div class="oc-desc">Hardest strategy — exposes model to distribution shift. 2023 had different outcome frequencies than training years, hurting both model and climatology. Strong performance here = genuine predictive skill.</div>
+      </div>
+      <div class="outcome-cell">
+        <div class="oc-label">Strategy 2</div>
+        <div class="oc-title">Even → Odd</div>
+        <div class="oc-freq" style="font-size:1rem;margin-bottom:0.6rem;">1,900 train · 1,900 test</div>
+        <div class="oc-desc">Train on even-numbered seasons, test on odd. Adjacent seasons share similar competitive structure, reducing long-term shift. Large test set yields stable IGN estimates.</div>
+      </div>
+      <div class="outcome-cell">
+        <div class="oc-label">Strategy 3</div>
+        <div class="oc-title">Odd → Even</div>
+        <div class="oc-freq" style="font-size:1rem;margin-bottom:0.6rem;">1,900 train · 1,900 test</div>
+        <div class="oc-desc">Mirror of Even→Odd. Consistent results across both interleaved strategies confirms improvements are not a partition artifact.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS TABS -->
+  <div id="results" class="psec rv">
+    <h2>Results by Validation Strategy</h2>
+    <div class="tabs">
+      <button class="tab on" onclick="showTab('temporal', this)">Temporal</button>
+      <button class="tab" onclick="showTab('evenodd', this)">Even → Odd</button>
+      <button class="tab" onclick="showTab('oddeven', this)">Odd → Even</button>
+      <button class="tab" onclick="showTab('summary', this)">Summary</button>
+    </div>
+
+    <!-- TEMPORAL -->
+    <div id="tab-temporal" class="tab-pane on">
+      <p style="font-family:var(--mono);font-size:10px;color:var(--ink3);letter-spacing:0.08em;margin-bottom:1rem;">TRAIN: 3,420 matches (2014–2022) &nbsp;·&nbsp; TEST: 380 matches (2023)</p>
+      <div class="warn"><strong>Distribution Shift:</strong> The 2023 test year had significantly different outcome distribution — Home Win 46.8% vs training 50.9% (−4.1%). This makes temporal validation the hardest strategy.</div>
+      <p style="margin:1rem 0 0.5rem;font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);">Overall 3-Class Results</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Model</th><th>Accuracy</th><th>IGN</th><th>vs Climatology</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Climatology</strong></td><td>46.8%</td><td>1.5338</td><td>BASELINE</td></tr>
+            <tr><td>Calibrated Ridge</td><td>46.8%</td><td>1.5422</td><td class="lose">−0.0085</td></tr>
+            <tr><td>Calibrated RF</td><td>46.8%</td><td>1.5446</td><td class="lose">−0.0108</td></tr>
+            <tr><td>Logistic Regression</td><td>46.8%</td><td>1.5456</td><td class="lose">−0.0119</td></tr>
+            <tr><td>Best Ensemble</td><td>46.8%</td><td>1.5476</td><td class="lose">−0.0139</td></tr>
+            <tr><td>Calibrated Ensemble</td><td>46.8%</td><td>1.5490</td><td class="lose">−0.0153</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin:1.5rem 0 0.5rem;font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);">Away Win — MODEL WINS ✓</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Model</th><th>Model IGN</th><th>Clim IGN</th><th>Δ IGN</th><th>Winner</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Climatology</strong></td><td>0.8398</td><td>0.8398</td><td>BASE</td><td>—</td></tr>
+            <tr class="best"><td>Logistic Regression</td><td>0.8312</td><td>0.8398</td><td class="win">+0.0086</td><td><span class="bdg w">Model</span></td></tr>
+            <tr class="best"><td>Calibrated Ensemble</td><td>0.8330</td><td>0.8398</td><td class="win">+0.0068</td><td><span class="bdg w">Model</span></td></tr>
+            <tr class="best"><td>Best Ensemble</td><td>0.8353</td><td>0.8398</td><td class="win">+0.0046</td><td><span class="bdg w">Model</span></td></tr>
+            <tr class="best"><td>Calibrated RF</td><td>0.8388</td><td>0.8398</td><td class="win">+0.0010</td><td><span class="bdg w">Model</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="ib"><strong>Temporal Finding:</strong> Only Away Win shows model improvement (+0.0086 bits best). Home Win and Draw both lose to climatology — the distribution shift between 2022 training and 2023 test hurts performance significantly overall.</div>
+    </div>
+
+    <!-- EVEN ODD -->
+    <div id="tab-evenodd" class="tab-pane">
+      <p style="font-family:var(--mono);font-size:10px;color:var(--ink3);letter-spacing:0.08em;margin-bottom:1rem;">TRAIN: 1,900 matches (even seasons) &nbsp;·&nbsp; TEST: 1,900 matches (odd seasons)</p>
+      <p style="margin:1rem 0 0.5rem;font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);">Overall 3-Class Results</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Model</th><th>Accuracy</th><th>IGN</th><th>vs Climatology</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Climatology</strong></td><td>51.3%</td><td>1.4869</td><td>BASELINE</td></tr>
+            <tr class="best"><td>Calibrated RF</td><td>51.3%</td><td>1.4853</td><td class="win">+0.0016</td></tr>
+            <tr class="best"><td>Calibrated Ridge</td><td>51.3%</td><td>1.4853</td><td class="win">+0.0017</td></tr>
+            <tr class="best"><td>Best Ensemble</td><td>51.2%</td><td>1.4860</td><td class="win">+0.0010</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin:1.5rem 0 0.5rem;font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);">Home Win — MODEL WINS ✓</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Model</th><th>Model IGN</th><th>Clim IGN</th><th>Δ IGN</th><th>Winner</th></tr></thead>
+          <tbody>
+            <tr class="best"><td>Calibrated RF</td><td>0.9977</td><td>1.0002</td><td class="win">+0.0025</td><td><span class="bdg w">Model</span></td></tr>
+            <tr class="best"><td>Calibrated Ensemble</td><td>0.9978</td><td>1.0002</td><td class="win">+0.0024</td><td><span class="bdg w">Model</span></td></tr>
+            <tr class="best"><td>Best Ensemble</td><td>0.9986</td><td>1.0002</td><td class="win">+0.0016</td><td><span class="bdg w">Model</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin:1.5rem 0 0.5rem;font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);">Draw — MODEL WINS ✓</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Model</th><th>Model IGN</th><th>Clim IGN</th><th>Δ IGN</th><th>Winner</th></tr></thead>
+          <tbody>
+            <tr class="best"><td>Best Ensemble</td><td>0.7803</td><td>0.7815</td><td class="win">+0.0012</td><td><span class="bdg w">Model</span></td></tr>
+            <tr class="best"><td>Calibrated RF</td><td>0.7807</td><td>0.7815</td><td class="win">+0.0008</td><td><span class="bdg w">Model</span></td></tr>
+            <tr class="best"><td>Logistic Regression</td><td>0.7810</td><td>0.7815</td><td class="win">+0.0005</td><td><span class="bdg w">Model</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="ib"><strong>Even→Odd Finding:</strong> Model beats climatology overall and wins on both Home Win and Draw. Away Win remains elusive — Climatology wins on Away in this strategy. Overall IGN improvement of +0.0017 bits.</div>
+    </div>
+
+    <!-- ODD EVEN -->
+    <div id="tab-oddeven" class="tab-pane">
+      <p style="font-family:var(--mono);font-size:10px;color:var(--ink3);letter-spacing:0.08em;margin-bottom:1rem;">TRAIN: 1,900 matches (odd seasons) &nbsp;·&nbsp; TEST: 1,900 matches (even seasons)</p>
+      <p style="margin:1rem 0 0.5rem;font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);">Overall 3-Class Results</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Model</th><th>Accuracy</th><th>IGN</th><th>vs Climatology</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Climatology</strong></td><td>49.7%</td><td>1.5033</td><td>BASELINE</td></tr>
+            <tr class="best"><td>Best Ensemble</td><td>49.9%</td><td>1.5018</td><td class="win">+0.0015</td></tr>
+            <tr><td>Calibrated RF</td><td>49.7%</td><td>1.5036</td><td class="lose">−0.0003</td></tr>
+            <tr><td>Logistic Regression</td><td>49.6%</td><td>1.5054</td><td class="lose">−0.0021</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin:1.5rem 0 0.5rem;font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);">Home Win — MODEL WINS ✓</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Model</th><th>Model IGN</th><th>Clim IGN</th><th>Δ IGN</th><th>Winner</th></tr></thead>
+          <tbody>
+            <tr class="best"><td>Isotonic LogReg</td><td>0.9975</td><td>1.0007</td><td class="win">+0.0032</td><td><span class="bdg w">Model</span></td></tr>
+            <tr class="best"><td>Best Ensemble</td><td>0.9978</td><td>1.0007</td><td class="win">+0.0028</td><td><span class="bdg w">Model</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin:1.5rem 0 0.5rem;font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);">Draw — MODEL WINS ✓</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Model</th><th>Model IGN</th><th>Clim IGN</th><th>Δ IGN</th><th>Winner</th></tr></thead>
+          <tbody>
+            <tr class="best"><td>Logistic Regression</td><td>0.8006</td><td>0.8044</td><td class="win">+0.0038</td><td><span class="bdg w">Model</span></td></tr>
+            <tr class="best"><td>Best Ensemble</td><td>0.8022</td><td>0.8044</td><td class="win">+0.0022</td><td><span class="bdg w">Model</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="ib"><strong>Odd→Even Finding:</strong> Mirrors Even→Odd — model wins on Home Win (+0.0032 best) and Draw (+0.0038 best). Away Win again lost to climatology. Consistent results across both interleaved strategies confirms robustness.</div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div id="tab-summary" class="tab-pane">
+      <p style="margin-bottom:1rem;font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);">Final Summary — Model vs Climatology Wins</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Strategy</th><th>Home Win</th><th>Draw</th><th>Away Win</th><th>Overall</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Temporal</strong></td><td><span class="bdg l">Clim</span></td><td><span class="bdg l">Clim</span></td><td><span class="bdg w">Model</span></td><td><span class="bdg l">Clim</span></td></tr>
+            <tr><td><strong>Even → Odd</strong></td><td><span class="bdg w">Model</span></td><td><span class="bdg w">Model</span></td><td><span class="bdg l">Clim</span></td><td><span class="bdg w">Model</span></td></tr>
+            <tr><td><strong>Odd → Even</strong></td><td><span class="bdg w">Model</span></td><td><span class="bdg w">Model</span></td><td><span class="bdg l">Clim</span></td><td><span class="bdg w">Model</span></td></tr>
+            <tr><td><strong>Total Wins</strong></td><td><strong class="win">2/3</strong></td><td><strong class="win">2/3</strong></td><td><strong class="lose">1/3</strong></td><td><strong class="win">2/3</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sum-grid">
+        <div class="sum-cell"><div class="sum-lbl">Home Win</div><div class="sum-val g">2/3 wins</div></div>
+        <div class="sum-cell"><div class="sum-lbl">Draw</div><div class="sum-val g">2/3 wins</div></div>
+        <div class="sum-cell"><div class="sum-lbl">Away Win</div><div class="sum-val r">1/3 wins</div></div>
+        <div class="sum-cell"><div class="sum-lbl">Overall</div><div class="sum-val g">2/3 wins</div></div>
+      </div>
+      <div class="ib"><strong>Key Insight:</strong> Away Win is the hardest outcome — model loses to climatology in 2/3 strategies, suggesting away performance is inherently more variable and sensitive to distribution shift. Home Win and Draw show consistent model improvement in both interleaved strategies.</div>
+    </div>
+  </div>
+
+  <!-- KEY FINDINGS -->
+  <div class="psec rv">
+    <h2>Key Findings</h2>
+    <ul>
+      <li><strong>Away Win is hardest</strong> — Model loses to climatology in 2/3 validation strategies. Away performance is inherently variable and difficult to predict robustly across seasons.</li>
+      <li><strong>Home Win &amp; Draw</strong> — Model consistently beats climatology in both interleaved strategies (Even→Odd and Odd→Even), demonstrating genuine probabilistic skill beyond historical averages.</li>
+      <li><strong>Temporal validation is hardest</strong> — Distribution shift between 2014–2022 training and 2023 test hurts performance. 2023 Home Win rate (46.8%) differed significantly from training (50.9%).</li>
+      <li><strong>Best improvement</strong> — +0.0086 bits on Away Win (Temporal, Logistic Regression) and +0.0032 bits on Home Win (Odd→Even, Isotonic LogReg).</li>
+      <li><strong>Accuracy is misleading</strong> — All models achieve identical accuracy to climatology (46.8–51.3%) yet differ substantially in IGN. Proper scoring rules are essential for probabilistic evaluation.</li>
+      <li><strong>Consistent results across interleaved splits</strong> — Even→Odd and Odd→Even both show model wins on Home Win and Draw, confirming results are not partition-dependent.</li>
+    </ul>
+  </div>
+
+  <!-- CONCLUSION -->
+  <div class="psec rv">
+    <h2>Conclusion</h2>
+    <p>This project demonstrated a comprehensive framework for evaluating probabilistic football forecasts across three match outcomes using proper scoring rules. Models sometimes outperformed climatology for Home Win and Draw, indicating meaningful probabilistic skill beyond historical averages.</p>
+    <p>Away Wins proved most challenging — models lost to climatology in 2/3 strategies, suggesting away performance is inherently more variable. These findings emphasize the importance of proper scoring rules: accuracy alone completely fails to capture calibration and information content differences between models.</p>
+    <p>Further improvements likely require larger and richer feature sets (player-level data, form indices, injuries) and potentially Poisson-based goal models rather than direct outcome classifiers. Multi-task training on multiple related outcomes may also reduce the specialization-generalization tension observed here.</p>
+  </div>
+
+</div>
+</div>
+
+<div class="wrap-wide" style="padding-bottom:2px;">
+  <div class="pnav">
+    <a href="math-llm.html" class="pnav-item"><div class="pnav-dir">← Previous</div><div class="pnav-title">LLM Fine-Tuning: Math Reasoning</div></a>
+    <a href="../index.html#projects" class="pnav-item next"><div class="pnav-dir">Back to All Projects →</div><div class="pnav-title">View Portfolio</div></a>
+  </div>
+</div>
+<footer><span>© 2026 Aaryan Kamdar</span><span>MS Computer Engineering · Virginia Tech</span><a href="../index.html">← Portfolio</a></footer>
+
+
+</body>
+</html>
