@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<script>
+// Theme — runs immediately to avoid flash
+(function(){
+  const t = localStorage.getItem('ak-theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', t);
+})();
+
+function toggleTheme(){
+  const h = document.documentElement;
+  const b = document.getElementById('themeBtn');
+  const isDark = h.getAttribute('data-theme') === 'dark';
+  const next = isDark ? 'light' : 'dark';
+  h.setAttribute('data-theme', next);
+  b.textContent = isDark ? '☽ Dark' : '☀ Light';
+  localStorage.setItem('ak-theme', next);
+}
+
+// Set correct button label on load
+document.addEventListener('DOMContentLoaded', function(){
+  const b = document.getElementById('themeBtn');
+  if(b){
+    const t = localStorage.getItem('ak-theme') || 'dark';
+    b.textContent = t === 'dark' ? '☀ Light' : '☽ Dark';
+  }
+});
+</script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CaféVision — Aaryan Kamdar</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--bg2:#111;--bg3:#181818;--ink:#f0ece4;--ink2:#a09a92;--ink3:#5a5450;--accent:#e84035;--accent2:#ff6b5e;--green:#2eab8a;--border:#252525;--border2:#333;--nav-bg:rgba(10,10,10,0.94);--tag:#1e1e1e;--mono:'Space Mono',monospace;--sans:'Space Grotesk',sans-serif;}
+[data-theme="light"]{--bg:#f5f2ec;--bg2:#ede9df;--bg3:#e4dfd5;--ink:#0d0d0d;--ink2:#5a5550;--ink3:#9a9590;--accent:#c0392b;--accent2:#e84035;--green:#1a6b5a;--border:#d8d3c8;--border2:#c8c3b8;--nav-bg:rgba(245,242,236,0.94);--tag:#e0dbd2;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.65;overflow-x:hidden;transition:background 0.3s,color 0.3s;}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;background:var(--nav-bg);border-bottom:1px solid var(--border);backdrop-filter:blur(20px);}
+.nav-logo{font-family:var(--mono);font-size:12px;color:var(--ink2);text-decoration:none;}
+.nav-logo b{color:var(--accent);}
+.nav-r{display:flex;align-items:center;gap:2rem;}
+.nav-links{display:flex;gap:1.5rem;list-style:none;}
+.nav-links a{font-size:11px;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;color:var(--ink2);transition:color 0.2s;}
+.nav-links a:hover{color:var(--accent);}
+.tbtn{font-family:var(--mono);font-size:10px;padding:5px 12px;border:1px solid var(--border2);border-radius:2px;background:transparent;color:var(--ink2);cursor:pointer;transition:all 0.2s;}
+.tbtn:hover{border-color:var(--accent);color:var(--accent);}
+.wrap{max-width:1000px;margin:0 auto;padding:0 2rem;}
+.wrap-wide{max-width:1200px;margin:0 auto;padding:0 2.5rem;}
+.ph{padding:110px 0 60px;border-bottom:1px solid var(--border);}
+.back{display:inline-flex;align-items:center;gap:0.4rem;font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);text-decoration:none;margin-bottom:2rem;transition:color 0.2s;}
+.back:hover{color:var(--accent);}
+.pcat{font-family:var(--mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:0.8rem;}
+.ph h1{font-size:clamp(2.2rem,5vw,3.8rem);font-weight:700;line-height:1.0;letter-spacing:-0.03em;margin-bottom:1rem;}
+.ph h1 em{color:var(--accent);font-style:italic;}
+.psub{font-size:0.95rem;color:var(--ink2);max-width:640px;margin-bottom:2rem;line-height:1.8;}
+.psub strong{color:var(--ink);}
+.ptags{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:2rem;}
+.ptag{font-family:var(--mono);font-size:10px;padding:3px 9px;background:var(--tag);border:1px solid var(--border2);border-radius:2px;color:var(--ink2);}
+.ptag.r{background:rgba(232,64,53,0.1);border-color:rgba(232,64,53,0.3);color:var(--accent);}
+.pmeta{display:flex;gap:2.5rem;flex-wrap:wrap;padding-top:1.5rem;border-top:1px solid var(--border);}
+.pm-l{font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:0.2rem;}
+.pm-v{font-size:0.88rem;font-weight:700;}.pm-v.g{color:var(--green);}
+.plinks{display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:2rem;}
+.btn{display:inline-flex;align-items:center;gap:0.4rem;padding:9px 20px;font-size:12px;font-weight:600;letter-spacing:0.05em;text-decoration:none;border-radius:2px;transition:all 0.2s;cursor:pointer;border:none;font-family:var(--sans);}
+.btn-r{background:var(--accent);color:#fff;}.btn-r:hover{background:var(--accent2);}
+.btn-o{background:transparent;color:var(--ink);border:1.5px solid var(--border2);}.btn-o:hover{border-color:var(--accent);color:var(--accent);}
+.pbody{padding:60px 0;}
+.psec{margin-bottom:3.5rem;}
+.psec h2{font-size:1.35rem;font-weight:700;margin-bottom:1rem;position:relative;padding-bottom:0.6rem;}
+.psec h2::after{content:'';position:absolute;bottom:0;left:0;width:28px;height:2px;background:var(--accent);}
+.psec p{font-size:0.9rem;color:var(--ink2);line-height:1.8;margin-bottom:1rem;}
+.psec p strong{color:var(--ink);}
+.psec ul{list-style:none;display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1rem;}
+.psec li{font-size:0.88rem;color:var(--ink2);padding-left:1.2rem;position:relative;line-height:1.7;}
+.psec li::before{content:'—';position:absolute;left:0;color:var(--border2);}
+.psec li strong{color:var(--ink);}
+/* VIDEO */
+.video-section{background:var(--bg2);border:1px solid var(--border);padding:2rem;margin:2rem 0;}
+.video-sec-label{font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:1.5rem;}
+.video-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
+.video-card{background:var(--bg2);display:flex;flex-direction:column;}
+.vwrap{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#000;}
+.vwrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;display:block;}
+.vcap{padding:1rem 1.2rem;border-top:1px solid var(--border);}
+.vcap-top{display:flex;justify-content:space-between;align-items:flex-start;gap:0.5rem;margin-bottom:0.35rem;}
+.vcap-title{font-size:0.88rem;font-weight:700;}
+.vcap-badge{font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:2px;background:rgba(232,64,53,0.12);border:1px solid rgba(232,64,53,0.3);color:var(--accent);white-space:nowrap;}
+.vcap-desc{font-size:0.81rem;color:var(--ink2);line-height:1.55;}
+/* METRICS */
+.ms3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin:2rem 0;}
+.mc{background:var(--bg2);padding:1.3rem;text-align:center;}
+.mn{font-size:2.2rem;font-weight:700;color:var(--green);line-height:1;margin-bottom:0.2rem;}
+.ml{font-family:var(--mono);font-size:9px;color:var(--ink3);letter-spacing:0.08em;text-transform:uppercase;}
+/* BARS */
+.bc{display:flex;flex-direction:column;gap:0.65rem;margin:1rem 0;}
+.br{display:flex;align-items:center;gap:0.8rem;}
+.bl{font-size:0.78rem;color:var(--ink2);width:160px;flex-shrink:0;}
+.bt{flex:1;height:8px;background:var(--bg3);border-radius:1px;overflow:hidden;}
+.bf{height:100%;border-radius:1px;transition:width 1.2s cubic-bezier(0.4,0,0.2,1);}
+.bf.g{background:var(--green);}.bf.r{background:var(--accent);}
+.bv{font-family:var(--mono);font-size:10px;color:var(--ink3);width:40px;text-align:right;}
+/* PIPELINE */
+.pipe{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--border);margin:1.5rem 0;}
+.pipe-step{background:var(--bg2);padding:1.2rem 1.3rem;}
+.ps-num{font-family:var(--mono);font-size:10px;color:var(--accent);margin-bottom:0.4rem;}
+.ps-title{font-size:0.88rem;font-weight:700;margin-bottom:0.3rem;}
+.ps-desc{font-size:0.78rem;color:var(--ink2);line-height:1.55;}
+/* INSIGHT */
+.ib{padding:1rem 1.4rem;background:rgba(46,171,138,0.06);border:1px solid rgba(46,171,138,0.2);border-left:3px solid var(--green);font-size:0.87rem;color:var(--ink2);line-height:1.7;margin:1.5rem 0;}
+.ib strong{color:var(--ink);}
+.pnav{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
+.pnav-item{background:var(--bg2);padding:1.5rem 2rem;text-decoration:none;display:block;transition:background 0.2s;}
+.pnav-item:hover{background:var(--bg3);}
+.pnav-dir{font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:0.3rem;}
+.pnav-title{font-size:0.9rem;font-weight:600;color:var(--ink);}
+.pnav-item.next{text-align:right;}
+footer{border-top:1px solid var(--border);padding:1.5rem 2.5rem;display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:10px;color:var(--ink3);}
+footer a{color:var(--ink3);text-decoration:none;}
+@keyframes up{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.a1{animation:up 0.6s ease forwards 0.05s;}.a2{animation:up 0.6s ease forwards 0.15s;}.a3{animation:up 0.6s ease forwards 0.25s;}.a4{animation:up 0.6s ease forwards 0.35s;}.a5{animation:up 0.6s ease forwards 0.45s;}
+.rv{opacity:1;transform:translateY(0);transition:opacity 0.55s ease,transform 0.55s ease;}
+.rv.on{opacity:1;transform:translateY(0);}
+@media(max-width:768px){nav{padding:0 1.2rem;}.nav-links{gap:1rem;}.pnav{grid-template-columns:1fr;}.video-grid{grid-template-columns:1fr;}.ms3{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html"><b>AK</b> // PORTFOLIO</a>
+  <div class="nav-r">
+    <ul class="nav-links">
+      
+      <li><a href="../index.html#projects">Projects</a></li>
+      <li><a href="../index.html#contact">Contact</a></li>
+    </ul>
+    <button class="tbtn" id="themeBtn" onclick="toggleTheme()">☀ Light</button>
+  </div>
+</nav>
+
+<div class="wrap">
+<div class="ph">
+  <a href="../index.html#projects" class="back a1">← Back to Projects</a>
+  <p class="pcat a1">Computer Vision · Real-Time Detection</p>
+  <h1 class="a2">CaféVision:<br><em>AI-Powered Space Monitoring</em></h1>
+  <p class="psub a3">Real-time table occupancy detection system using <strong>YOLOv11x</strong> on live restaurant video feeds. Adaptive training under occlusion and variable lighting — <strong>91% accuracy</strong> on continuous video. Dashboard integration for customer flow insights.</p>
+  <div class="ptags a3">
+    <span class="ptag r">Computer Vision</span><span class="ptag r">YOLOv11x</span>
+    <span class="ptag r">Real-Time Detection</span><span class="ptag">OpenCV</span>
+    <span class="ptag">PyTorch</span><span class="ptag">Video Analytics</span><span class="ptag">Object Detection</span>
+  </div>
+  <div class="plinks a4">
+    <a href="https://github.com/aaryan-kamdar/CafeVision-RealTimeTableOccupancy" target="_blank" class="btn btn-r">GitHub →</a>
+  </div></div>
+  </div>
+</div>
+</div>
+
+<div class="wrap">
+<div class="pbody">
+
+  <div class="psec rv">
+    <h2>Overview</h2>
+    <p>Restaurant operators face constant challenges managing seating capacity and customer flow, often relying on staff manually tracking available tables. CaféVision automates this entirely — a ceiling-mounted camera feed is processed by YOLOv11x in real time to detect occupied and unoccupied tables throughout the dining space.</p>
+    <p>The system integrates detection outputs into reporting tools providing actionable insights for staffing, reservation management, and layout optimization.</p>
+  </div>
+
+  <div class="psec rv">
+    <h2>Technical Pipeline</h2>
+    <div class="pipe">
+      <div class="pipe-step"><div class="ps-num">01</div><div class="ps-title">Video Ingestion</div><div class="ps-desc">Live camera feed captured frame-by-frame using OpenCV pipeline</div></div>
+      <div class="pipe-step"><div class="ps-num">02</div><div class="ps-title">YOLOv11x Detection</div><div class="ps-desc">Person and empty table regions detected simultaneously per frame</div></div>
+      <div class="pipe-step"><div class="ps-num">03</div><div class="ps-title">Occupancy Logic</div><div class="ps-desc">Rule-based inference from bounding box overlap with predefined table zones</div></div>
+      <div class="pipe-step"><div class="ps-num">04</div><div class="ps-title">Adaptive Training</div><div class="ps-desc">Data augmentation for occlusion, lighting variation, and viewing angle robustness</div></div>
+      <div class="pipe-step"><div class="ps-num">05</div><div class="ps-title">Dashboard Output</div><div class="ps-desc">Real-time occupancy counts fed to reporting layer for operational decisions</div></div>
+    </div>
+  </div>
+
+  <div class="psec rv">
+    <h2>Live Detection Demos</h2>
+    <p style="margin-bottom:1.5rem;">Real-time YOLOv11x detection running on actual restaurant video feeds. Click to watch on YouTube.</p>
+    <div class="video-grid">
+      <a href="https://www.youtube.com/watch?v=Ai1SKW_06GM" target="_blank" class="video-card" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;">
+        <div style="position:relative;aspect-ratio:16/9;overflow:hidden;background:#000;">
+          <img src="https://img.youtube.com/vi/Ai1SKW_06GM/maxresdefault.jpg" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.src='https://img.youtube.com/vi/Ai1SKW_06GM/hqdefault.jpg'" alt="CaféVision Demo 1"/>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="width:64px;height:64px;background:rgba(232,64,53,0.92);border-radius:50%;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="white"><polygon points="8,5 19,12 8,19"/></svg></div></div>
+          <div style="position:absolute;bottom:10px;left:10px;font-family:monospace;font-size:9px;background:rgba(0,0,0,0.7);color:#2eab8a;padding:3px 8px;border-radius:2px;letter-spacing:0.06em;">LIVE DETECTION FEED</div>
+        </div>
+        <div class="vcap">
+          <div class="vcap-top"><span class="vcap-title">Live Detection Feed — Restaurant Floor</span><span class="vcap-badge">YOLOv11x</span></div>
+          <p class="vcap-desc">Real-time occupancy detection on CCTV feed. Click to watch on YouTube ↗</p>
+        </div>
+      </a>
+      <a href="https://www.youtube.com/watch?v=zigFvivC4ho" target="_blank" class="video-card" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;">
+        <div style="position:relative;aspect-ratio:16/9;overflow:hidden;background:#000;">
+          <img src="https://img.youtube.com/vi/zigFvivC4ho/maxresdefault.jpg" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.src='https://img.youtube.com/vi/zigFvivC4ho/hqdefault.jpg'" alt="CaféVision Demo 2"/>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="width:64px;height:64px;background:rgba(232,64,53,0.92);border-radius:50%;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="white"><polygon points="8,5 19,12 8,19"/></svg></div></div>
+          <div style="position:absolute;bottom:10px;left:10px;font-family:monospace;font-size:9px;background:rgba(0,0,0,0.7);color:#2eab8a;padding:3px 8px;border-radius:2px;letter-spacing:0.06em;">MULTI-TABLE TRACKING</div>
+        </div>
+        <div class="vcap">
+          <div class="vcap-top"><span class="vcap-title">Multi-Table Tracking &amp; Occupancy Logic</span><span class="vcap-badge">91% Accuracy</span></div>
+          <p class="vcap-desc">Occupancy inference across multiple zones simultaneously. Click to watch on YouTube ↗</p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="psec rv">
+    <h2>Impact &amp; Applications</h2>
+    <ul>
+      <li><strong>Customer Flow Optimization</strong> — real-time seat availability reduces wait times and improves turnover</li>
+      <li><strong>Staffing Intelligence</strong> — occupancy trends inform shift scheduling and resource allocation</li>
+      <li><strong>Contactless Monitoring</strong> — purely camera-based passive sensing, no wearables or tags required</li>
+      <li><strong>Scalability</strong> — architecture supports multi-camera deployments across large restaurant floors</li>
+    </ul>
+  </div>
+
+</div>
+</div>
+
+<div class="wrap-wide" style="padding-bottom:2px;">
+  <div class="pnav">
+    <a href="brain-tumor.html" class="pnav-item"><div class="pnav-dir">← Previous</div><div class="pnav-title">Brain Tumor Classification</div></a>
+    <a href="satellite.html" class="pnav-item next"><div class="pnav-dir">Next Project →</div><div class="pnav-title">Satellite Vessel Detection (SAR)</div></a>
+  </div>
+</div>
+<footer><span>© 2026 Aaryan Kamdar</span><span>MS Computer Engineering · Virginia Tech</span><a href="../index.html">← Portfolio</a></footer>
+
+</body>
+</html>
